@@ -1,0 +1,20 @@
+# Fully containerized dev environment: Next.js dev server with hot-reload.
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: development
+    container_name: callmonitoring-frontend-app
+    environment:
+      NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL:-http://localhost:8080}
+      NEXTAUTH_URL: ${NEXTAUTH_URL:-http://localhost:3000}
+      NEXTAUTH_SECRET: ${NEXTAUTH_SECRET:-dev-only-secret-key-change-this-in-production}
+    ports:
+      - "${APP_PORT:-3000}:3000"
+    volumes:
+      # Bind mount source for hot-reload
+      - ./:/app
+      # Keep the container's own dependency/build output out of the bind mount
+      - /app/node_modules
+      - /app/.next
