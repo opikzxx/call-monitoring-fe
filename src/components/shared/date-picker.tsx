@@ -32,6 +32,7 @@ type DatePickerProps = {
   disabled?: boolean;
   ariaInvalid?: boolean;
   fromDate?: Date;
+  toDate?: Date;
   className?: string;
   portalContainer?: HTMLElement | null;
 };
@@ -123,9 +124,13 @@ export function DatePicker(props: DatePickerProps) {
         <Calendar
           mode="single"
           selected={selected}
-          defaultMonth={selected}
+          defaultMonth={selected ?? props.toDate}
           startMonth={props.fromDate}
-          disabled={props.fromDate ? { before: props.fromDate } : undefined}
+          endMonth={props.toDate}
+          disabled={[
+            ...(props.fromDate ? [{ before: props.fromDate }] : []),
+            ...(props.toDate ? [{ after: props.toDate }] : []),
+          ]}
           onSelect={(date) => {
             if (!date) return;
             props.onChange(toIsoDate(date));

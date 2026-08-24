@@ -25,12 +25,26 @@ export const callMonitoringPageSchema = pageResponseSchema(
 
 export type CallMonitoringPage = z.infer<typeof callMonitoringPageSchema>;
 
+export const CALL_MONITORING_PAGE_SIZE = 5;
+
+export const SORTABLE_FIELDS = [
+  "callId",
+  "callTimestamp",
+  "csName",
+  "customerName",
+  "sentimentScore",
+] as const;
+
+export type SortableField = (typeof SORTABLE_FIELDS)[number];
+
+export type SortDirection = "ASC" | "DESC";
+
 export type ListCallMonitoringParams = {
   search?: string;
   startDate?: string;
   endDate?: string;
   sentiment?: SentimentFilter;
-  sortBy?: string;
-  sortDir?: "ASC" | "DESC";
+  sortBy?: SortableField;
+  sortDir?: SortDirection;
   page?: number;
 };
